@@ -1,0 +1,32 @@
+{
+    "manifest_version": 2,
+    "name": "My OpenAI Extension",
+    "version": "1.0",
+    "description": "A Google Chrome extension to interact with OpenAI's DaVinci engine.",
+    "icons": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "browser_action": {
+      "default_icon": "icons/icon48.png",
+      "default_popup": "popup.html"
+    },
+    "permissions": [
+      "activeTab",
+      "storage",
+      "https://api.openai.com/*"
+    ],
+    "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+    "content_scripts": [
+      {
+        "matches": ["*://*/*"],
+        "js": ["content.js"]
+      }
+    ],
+    "options_page": "options.html"
+  }
+  
