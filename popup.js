@@ -19,7 +19,7 @@ async function fetchOpenAI(promptText) {
     n: 1,
     stop: null,
     temperature: 0.7,
-  };
+  }};
 
   const response = await fetch(url, {
-    method
+    method })
