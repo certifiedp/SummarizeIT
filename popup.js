@@ -23,3 +23,13 @@ async function fetchOpenAI(promptText) {
 
   const response = await fetch(url, {
     method })
+
+// In popup.js, add this function
+async function getAPIKey() {
+    return new Promise((resolve) => {
+      chrome.storage.sync.get(['apiKey'], (result) => {
+        resolve(result.apiKey);
+      });
+    });
+  }
+  
