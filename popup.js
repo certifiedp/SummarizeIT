@@ -1,62 +1,63 @@
-document.getElementById('summarize').addEventListener('click', async () => {
-  const apiKey = 'your_openai_api_key';
-  const text = await fetchTermsAndConditions();
-  const summary = await summarizeText(apiKey, text);
+// you must obtain an OpenAI GPT-3 APIKey to use API
+// You can obtain one here: https://platform.openai.com/account/api-keys
+const apiKey = ''; //paste it here
 
-  const summaryDiv = document.getElementById('summary');
-  summaryDiv.innerHTML = '';
-  summary.forEach(item => {
-    const bullet = document.createElement('li');
-    bullet.textContent = item;
-    summaryDiv.appendChild(bullet);
-  });
-});
+// Store question for GPT-3 and GPT-3's response.
+const questionElement = document.getElementById('question');
+const responseElement = document.getElementById('response');
 
-async function fetchTermsAndConditions() {
-  // Add code to fetch terms and conditions from the current page
-  // This can vary based on the website structure
-  return 'Sample terms and conditions...';
+function getWebsiteName(url) {
+  // Remove "www." and ".com"
+  let websiteName = url.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '').replace(/\/.*$/, '');
+  // Remove subdomains
+  websiteName = websiteName.split('.').slice(-2, -1)[0];
+  // Convert to uppercase
+  websiteName = websiteName.charAt(0).toUpperCase() + websiteName.slice(1);
+  return websiteName;
 }
 
-async function summarizeText(apiKey, text) {
-  const url = 'https://api.openai.com/v1/engines/davinci-codex/completions';
-  const prompt = `Please provide a summary in bullet points of the following text:\n\n${text}\n\nSummary:\n`;
+// Prepare API input
+chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
+  responseElement.innerText = "I'm sorry, but this webpage is not a valid WWW address. This extension can only handle internet-level webpages, not system-level ones.";
+  
+  const url = new URL(tabs[0].url).hostname;
+  const domain = getWebsiteName(url);
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      prompt,
-      max_tokens: 200,
-      n: 1,
-      stop: null,
-      temperature: 0.8
-    })
-  });
+  questionElement.innerText = `What data does ${domain} collect about its users, and how does it use it?`;
+  responseElement.innerText = "Loading...";
 
-  const data = await response.json();
+  const prompt = `Give me bullet points of how ${domain} collects data about its users, and how the company uses it.`;
+  const temperature = 0.5;
+  const maxTokens = 150;
 
-  if (response.ok) {
-    if (data.choices && data.choices.length > 0 && data.choices[0].text) {
-      const summary = data.choices[0].text.trim().split('\n');
-      return summary.filter(line => line.startsWith('-')).map(line => line.substr(1).trim());
+  const body = {
+    prompt,
+    temperature,
+    max_tokens: maxTokens,
+  };
+
+  // Call API
+  try {
+    const response = await fetch(`https://api.openai.com/v1/engines/davinci/completions?engine=davinci&prompt=${encodeURIComponent(prompt)}&temperature=${temperature}&max_tokens=${maxTokens}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`
+      },
+      body: JSON.stringify(body)
+    });
+
+    // Ensure response is valid
+    const data = await response.json();
+    const answer = data.choices && data.choices.length > 0 ? data.choices[0].text.trim()+"..." : null;
+
+    if (answer) {
+      responseElement.innerText = answer;
     } else {
-      throw new Error('Failed to generate summary: No choices in response');
+      responseElement.innerText = "Error: No answer received from API.";
     }
-  } else {
-    throw new Error(`Failed to generate summary: ${data.error || 'Unknown error'}`);
-  }
-}
 
-
-  const data = await response.json();
-  if (data.choices && data.choices.length > 0) {
-    const summary = data.choices[0].text.trim().split('\n-');
-    summary.shift(); // Remove the first empty element
-    return summary;
-  } else {
-    throw new Error('Failed to generate summary');
+  } catch (error) {
+    responseElement.innerText = `Error: ${error.message}`;
   }
+});
