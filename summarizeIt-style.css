@@ -17,9 +17,3 @@ button:hover {
     background-color: rgb(8, 63, 89);
   }
   
-  
-.empty-box {
-    width: 195px;
-    height: 170px;
-    border: 3px solid #000;
-  }
