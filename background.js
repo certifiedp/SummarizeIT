@@ -23,4 +23,4 @@ async function fetchSummary(text) {
     })
   });
 
-  const data = await response
+  const data = await response }
