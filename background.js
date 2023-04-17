@@ -1,9 +1,13 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "fetch_summary") {
-    fetchSummary(request.text).then((summary) => {
-      sendResponse({ summary: summary });
-    });
-    return true;
+    fetchSummary(request.text)
+      .then((summary) => {
+        sendResponse({ summary: summary });
+      })
+      .catch((error) => {
+        console.error("Error fetching summary:", error);
+      });
+    return true; // Required to handle asynchronous responses.
   }
 });
 
@@ -23,4 +27,7 @@ async function fetchSummary(text) {
     })
   });
 
-  const data = await response }
+  const data = await response.json();
+  const summary = data.choices[0].text
+    .split("\n")
+    .map((line) => line ) }

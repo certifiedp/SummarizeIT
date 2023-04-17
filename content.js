@@ -7,10 +7,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         chrome.runtime.sendMessage(
           { action: "fetch_summary", text: tosText },
           (response) => {
-            chrome.runtime.sendMessage({
-              action: "display_summary",
-              summary: response.summary,
-            });
+            if (response && response.summary) {
+              chrome.runtime.sendMessage({
+                action: "display_summary",
+                summary: response.summary,
+              });
+            }
           }
         );
       } else {
