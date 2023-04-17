@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "TOS Summarizer",
+  "name": "SummarizeIT",
   "version": "1.0",
   "description": "Summarizes terms of service and displays them in bullet points using the OpenAI API.",
   "permissions": [
