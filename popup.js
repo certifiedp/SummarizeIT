@@ -1,30 +1,41 @@
-document.getElementById("summarize").addEventListener("click", () => {
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    chrome.tabs.sendMessage(tabs[0].id, { action: "summarize_tos" });
+document.getElementById('summarize').addEventListener('click', async () => {
+  const apiKey = 'your_openai_api_key';
+  const text = await fetchTermsAndConditions();
+  const summary = await summarizeText(apiKey, text);
+
+  const summaryDiv = document.getElementById('summary');
+  summaryDiv.innerHTML = '';
+  summary.forEach(item => {
+    const bullet = document.createElement('li');
+    bullet.textContent = item;
+    summaryDiv.appendChild(bullet);
   });
 });
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "display_summary") {
-    const summaryList = document.getElementById("summary");
-    summaryList.innerHTML = "";
+async function fetchTermsAndConditions() {
+  // Add code to fetch terms and conditions from the current page
+  // This can vary based on the website structure
+  return 'Sample terms and conditions...';
+}
 
-    request.summary.forEach((point) => {
-      const li = document.createElement("li");
-      li.textContent = point;
-      summaryList.appendChild(li);
-    });
-  }
-});
+async function summarizeText(apiKey, text) {
+  const url = 'https://api.openai.com/v1/engines/davinci-codex/completions';
+  const prompt = `Summarize the following text in bullet points:\n\n${text}\n\nSummary:\n-`;
 
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      prompt,
+      max_tokens: 200,
+      n: 1,
+      stop: null,
+      temperature: 0.8
+    })
+  });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const summarizeButton = document.getElementById("summarize");
-  if (summarizeButton) {
-    summarizeButton.addEventListener("click", () => {
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        chrome.tabs.sendMessage(tabs[0].id, { action: "valleyProject" });
-      });
-    });
-  }
-});
+  const data = await response.json();
+  const summary = data.choices[0].text.trim }
