@@ -28,8 +28,5 @@
       "matches": ["<all_urls>"],
       "js": ["content.js"]
     }
-  ],
-  "host_permissions": [
-    "*://*.openai.com/*"
   ]
 }

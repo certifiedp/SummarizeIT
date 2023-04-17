@@ -17,3 +17,17 @@ button:hover {
     background-color: rgb(8, 63, 89);
   }
   
+
+  .summary-box {
+    background-color: lightblue;
+    padding: 16px;
+    border-radius: 8px;
+    max-height: 400px;
+    overflow: scroll;
+  }
+
+
+#main {
+    width: 400px;
+    padding: 10px;
+  }

@@ -18,7 +18,7 @@ function getWebsiteName(url) {
 
 // Prepare API input
 chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
-  responseElement.innerText = "I'm sorry, but this webpage is not a valid WWW address. This extension can only handle internet-level webpages, not system-level ones.";
+  responseElement.innerText = "I'm sorry, but this webpage is not a valid WWW address";
   
   const url = new URL(tabs[0].url).hostname;
   const domain = getWebsiteName(url);
@@ -47,7 +47,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
       body: JSON.stringify(body)
     });
 
-    // Ensure response is valid
+    // valid response
     const data = await response.json();
     const answer = data.choices && data.choices.length > 0 ? data.choices[0].text.trim()+"..." : null;
 
