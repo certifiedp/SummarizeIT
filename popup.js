@@ -16,19 +16,19 @@ function getWebsiteName(url) {
   return websiteName;
 }
 
-// Prepare API input
+//API CONDITIONS
 chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
   responseElement.innerText = "I'm sorry, but this webpage is not a valid WWW address";
   
   const url = new URL(tabs[0].url).hostname;
   const domain = getWebsiteName(url);
 
-  questionElement.innerText = `What data does ${domain} collect about its users, and how does it use it?`;
+  questionElement.innerText = `Please make bullet points summarizing ${domain}'s terms and services on its users`;
   responseElement.innerText = "Loading...";
 
   const prompt = `Give me bullet points of how ${domain} collects data about its users, and how the company uses it.`;
-  const temperature = 0.5;
-  const maxTokens = 150;
+  const temperature = 0;
+  const maxTokens = 250;
 
   const body = {
     prompt,
@@ -36,7 +36,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
     max_tokens: maxTokens,
   };
 
-  // Call API
+  //API CALL
   try {
     const response = await fetch(`https://api.openai.com/v1/engines/davinci/completions?engine=davinci&prompt=${encodeURIComponent(prompt)}&temperature=${temperature}&max_tokens=${maxTokens}`, {
       method: "POST",
@@ -47,7 +47,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
       body: JSON.stringify(body)
     });
 
-    // valid response
+    //GPT RESPONSE
     const data = await response.json();
     const answer = data.choices && data.choices.length > 0 ? data.choices[0].text.trim()+"..." : null;
 
