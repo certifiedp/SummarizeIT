@@ -1,0 +1,25 @@
+h1 {
+    font-weight: bold;
+    color: black;
+    font-size: 30px;
+  }
+
+button {
+    background-color: rgb(10, 174, 239);
+    border: 2px solid white;
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+
+button:hover {
+    background-color: rgb(8, 63, 89);
+  }
+  
+  
+.empty-box {
+    width: 195px;
+    height: 170px;
+    border: 3px solid #000;
+  }
