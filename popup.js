@@ -1,35 +1,18 @@
-const generateButton = document.getElementById('generate');
-const inputText = document.getElementById('input-text');
-const outputDiv = document.getElementById('output');
-
-generateButton.addEventListener('click', async () => {
-  const text = inputText.value;
-  if (text) {
-    const response = await fetchOpenAI(text);
-    outputDiv.textContent = response.choices[0].text;
-  }
+document.getElementById("summarize").addEventListener("click", () => {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, { action: "summarize_tos" });
+  });
 });
 
-async function fetchOpenAI(promptText) {
-  const apiKey = await getAPIKey();
-  const url = 'https://api.openai.com/v1/engines/davinci-codex/completions';
-  const data = {
-    prompt: promptText,
-    max_tokens: 50,
-    n: 1,
-    stop: null,
-    temperature: 0.7,
-  }};
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "display_summary") {
+    const summaryList = document.getElementById("summary");
+    summaryList.innerHTML = "";
 
-  const response = await fetch(url, {
-    method })
-
-// In popup.js, add this function
-async function getAPIKey() {
-    return new Promise((resolve) => {
-      chrome.storage.sync.get(['apiKey'], (result) => {
-        resolve(result.apiKey);
-      });
+    request.summary.forEach((point) => {
+      const li = document.createElement("li");
+      li.textContent = point;
+      summaryList.appendChild(li);
     });
   }
-  
+});
