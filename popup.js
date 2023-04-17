@@ -23,12 +23,12 @@ chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
   const url = new URL(tabs[0].url).hostname;
   const domain = getWebsiteName(url);
 
-  questionElement.innerText = `Please make bullet points summarizing ${domain}'s terms and services on its users`;
+  questionElement.innerText = `What does ${domain} do with your information, data, and what are their terms and services on its users`;
   responseElement.innerText = "Loading...";
 
-  const prompt = `Give me bullet points of how ${domain} collects data about its users, and how the company uses it.`;
-  const temperature = 0;
-  const maxTokens = 250;
+  const prompt = `Give me bullet points of how ${domain} collects data about its users, and how the company uses it.`; // still confused
+  const temperature = 0; //randomness in response
+  const maxTokens = 120; //number of tokens aka length of response query
 
   const body = {
     prompt,
