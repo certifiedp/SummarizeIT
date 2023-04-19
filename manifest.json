@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "SummarizeIT",
   "version": "1.0",
-  "description": "Summarizes terms of service and displays of your website using GPT-3",
+  "description": "Summarizes terms and services regarding your data on your active website using the GPT-3 Model!",
   "permissions": [
     "activeTab",
     "tabs"
