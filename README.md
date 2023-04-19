@@ -5,10 +5,10 @@ This extension uses OpenAI's GPT-3 Model to summarize the data, terms, and condi
 This extension is still being worked on. It's completely functional to use in the developer mode. Keep in mind that every API call costs a few cents so OpenAI will charge you if you exceed their token limit. 
 
 ## Step One
-Download the files from the repository
+Download the files from the repository.
 
 ## Step Two
-Create your API Key through https://platform.openai.com/account/api-keys and paste your API Key into the popup.js file
+Create your API Key through https://platform.openai.com/account/api-keys and paste your API Key into the popup.js file.
 
 ## Step Three
 Turn on the chrome developer mode, load the extension, and you're set!
