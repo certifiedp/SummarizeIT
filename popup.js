@@ -1,5 +1,4 @@
-// you must obtain an OpenAI GPT-3 APIKey to use API
-// You can obtain one here: https://platform.openai.com/account/api-keys
+// You need a GPT-3 API Key to use the extension: https://platform.openai.com/account/api-keys
 const apiKey = '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'; //paste it here
 
 // Store question for GPT-3 and GPT-3's response.
@@ -26,13 +25,11 @@ chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
   questionElement.innerText = `What does ${domain} do with your information, data, and what are their terms and services on its users`;
   responseElement.innerText = "Loading...";
 
-  const prompt = `Give me bullet points of how ${domain} collects data about its users, and how the company uses it.`; // still confused
-  const temperature = 0; //randomness in response
-  const maxTokens = 120; //number of tokens aka length of response query
+  const prompt = `Give me bullet points of how ${domain} collects data about its users, and how the company uses it.`; // still working on
+  const temperature = 0; //adjustable complexity in response
+  const maxTokens = 120; //adjustable response length
 
-  const body = {
-    prompt,
-    temperature,
+  const body = { prompt, temperature, 
     max_tokens: maxTokens,
   };
 
@@ -47,7 +44,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
       body: JSON.stringify(body)
     });
 
-    //GPT RESPONSE
+    //RESPONSE
     const data = await response.json();
     const answer = data.choices && data.choices.length > 0 ? data.choices[0].text.trim()+"..." : null;
 
