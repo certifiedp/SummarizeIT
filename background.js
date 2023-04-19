@@ -23,7 +23,7 @@ async function fetchSummary(text) {
       max_tokens: 100,
       n: 1,
       stop: null,
-      temperature: 0.8,
+      temperature: 0,
     })
   });
 
